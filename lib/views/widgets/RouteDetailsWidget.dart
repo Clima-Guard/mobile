@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+
 import 'GooglePlacesSearchBarWidget.dart';
 
 class RouteDetailsWidget extends StatefulWidget {
