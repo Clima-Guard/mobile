@@ -3,9 +3,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:google_places_flutter/google_places_flutter.dart';
 import 'package:google_places_flutter/model/place_type.dart';
-import 'package:google_places_flutter/model/prediction.dart';
 
 class GooglePlacesSearchBarWidget extends StatefulWidget {
+  final void Function(String) onPlaceSelected;
+  final String initialValue;
+
+  const GooglePlacesSearchBarWidget({
+    super.key,
+    required this.onPlaceSelected,
+    this.initialValue = '',
+  });
+
   @override
   _GooglePlacesSearchBarWidgetState createState() =>
       _GooglePlacesSearchBarWidgetState();
@@ -13,8 +21,14 @@ class GooglePlacesSearchBarWidget extends StatefulWidget {
 
 class _GooglePlacesSearchBarWidgetState
     extends State<GooglePlacesSearchBarWidget> {
-  final _controller = TextEditingController();
+  late TextEditingController _controller;
   final _focusNode = FocusNode();
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = TextEditingController(text: widget.initialValue);
+  }
 
   @override
   void dispose() {
@@ -30,21 +44,23 @@ class _GooglePlacesSearchBarWidgetState
       focusNode: _focusNode,
       googleAPIKey: dotenv.env['GOOGLE_MAPS_API_KEY']!,
       inputDecoration: InputDecoration(
-        hintText: 'Search for a place',
-        prefixIcon: Icon(Icons.search),
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(8),
-        ),
+        hintText: 'Search location...',
+        prefixIcon: const Icon(Icons.location_on_outlined),
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
       ),
       placeType: PlaceType.geocode,
       debounceTime: 300,
-      itemClick: (Prediction p) {
-        setState(() {
-          _controller.text = p.description!;
-          _controller.selection = TextSelection.fromPosition(
-            TextPosition(offset: _controller.text.length),
-          );
-        });
+      itemClick: (p) {
+        if (p.description != null) {
+          widget.onPlaceSelected(p.description!);
+          setState(() {
+            _controller.text = p.description!;
+            _controller.selection = TextSelection.fromPosition(
+              TextPosition(offset: _controller.text.length),
+            );
+          });
+        }
         _focusNode.unfocus();
       },
     );
