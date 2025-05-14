@@ -1,16 +1,21 @@
 
+import 'package:clima_guard_mobile/models/RouteMergedData.dart';
 import 'package:flutter/material.dart';
 
 import 'RecommendationWidget.dart';
 
-class RecommendationContainerWidget extends StatefulWidget {
-  const RecommendationContainerWidget({super.key});
+class RecommendationContainerWidget extends StatelessWidget {
+  final List<RouteMergedData> fullRoutes;
+  final int selectedIndex;
+  final ValueChanged<int> onSelected;
 
-  @override
-  State<RecommendationContainerWidget> createState() => _RecommendationContainerWidgetState();
-}
+  const RecommendationContainerWidget({
+    super.key,
+    required this.fullRoutes,
+    required this.selectedIndex,
+    required this.onSelected,
+  });
 
-class _RecommendationContainerWidgetState extends State<RecommendationContainerWidget> {
   @override
   Widget build(BuildContext context) {
     return DraggableScrollableSheet(
@@ -35,10 +40,16 @@ class _RecommendationContainerWidgetState extends State<RecommendationContainerW
           ),
           child: ListView.builder(
             controller: scrollController,
-            itemCount: 3,
+            itemCount: fullRoutes.length,
             itemBuilder: (context, index) {
+              final route = fullRoutes[index];
               return RecommendationWidget(
                 index: index,
+                departureTime: route.recommendedDepartureTime,
+                distance: route.routeData.distanceMeters,
+                duration: route.routeData.duration,
+                isSelected: selectedIndex == index,
+                onTap: () => onSelected(index),
               );
             },
           ),

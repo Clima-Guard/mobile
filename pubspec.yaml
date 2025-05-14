@@ -43,6 +43,8 @@ dependencies:
   google_fonts: ^6.2.1
   jiffy: ^6.4.3
   intl: ^0.20.2
+  http: ^1.4.0
+  logger: ^2.5.0
 
 dev_dependencies:
   flutter_test:

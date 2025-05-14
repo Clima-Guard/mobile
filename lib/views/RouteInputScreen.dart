@@ -4,8 +4,12 @@ import 'package:clima_guard_mobile/views/widgets/RouteInputDetailsWidget.dart';
 import 'package:clima_guard_mobile/views/widgets/TimePeriodWidget.dart';
 import 'package:flutter/material.dart';
 
+import '../viewmodels/RouteViewModel.dart';
+
 class RouteInputScreen extends StatefulWidget {
-  const RouteInputScreen({super.key});
+  final RouteViewModel viewModel;
+
+  const RouteInputScreen({super.key, required this.viewModel});
 
   @override
   State<RouteInputScreen> createState() => _RouteInputScreenState();
@@ -61,6 +65,7 @@ class _RouteInputScreenState extends State<RouteInputScreen> {
                         origin: _origin!,
                         destination: _destination!,
                         waypoints: _waypoints,
+                        viewModel: widget.viewModel,
                       ),
                     ),
                   );

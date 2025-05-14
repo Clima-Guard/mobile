@@ -1,0 +1,39 @@
+
+import 'dart:convert';
+import 'package:clima_guard_mobile/dtos/WeatherRequestDto.dart';
+import 'package:http/http.dart' as http;
+import 'package:logger/logger.dart';
+
+class WeatherService {
+  final String ipAddress;
+  final Logger logger;
+
+  WeatherService({
+    required this.ipAddress,
+    required this.logger
+  });
+
+  String get baseUrl => 'http://$ipAddress:5001/api/weather/compress';
+
+  Future<String> fetchS3Key(WeatherRequestDto request) async {
+    final uri = Uri.parse(baseUrl);
+
+    logger.i('[WeatherService] Requesting compressed weather data at: $uri');
+
+    final response = await http.post(
+      uri,
+      headers: {"Content-Type": "application/json"},
+      body: jsonEncode(request.toJson()),
+    );
+
+    logger.i('[WeatherService] Status Code: ${response.statusCode}');
+    logger.d('[WeatherService] Response Body: ${response.body}');
+
+    if (response.statusCode == 200) {
+      return response.body.replaceAll('"', '');
+    } else {
+      logger.e('[WeatherService] Failed to fetch S3 key');
+      throw Exception('Failed to fetch S3 key');
+    }
+  }
+}

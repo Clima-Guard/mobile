@@ -1,30 +1,59 @@
 
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
-class RecommendationWidget extends StatefulWidget {
+class RecommendationWidget extends StatelessWidget {
   final int index;
+  final DateTime departureTime;
+  final int distance;
+  final Duration duration;
+  final bool isSelected;
+  final VoidCallback onTap;
 
   const RecommendationWidget({
     super.key,
-    required this.index
+    required this.index,
+    required this.departureTime,
+    required this.distance,
+    required this.duration,
+    required this.isSelected,
+    required this.onTap,
   });
 
-  @override
-  State<RecommendationWidget> createState() => _RecommendationWidgetState();
-}
+  String formatDistance(int meters) {
+    double kilometers = meters / 1000.0;
+    return '${kilometers.toStringAsFixed(1)} km';
+  }
 
-class _RecommendationWidgetState extends State<RecommendationWidget> {
+  String formatDuration(Duration duration) {
+    if (duration.inHours > 0) {
+      return '${duration.inHours}h ${duration.inMinutes.remainder(60)}m';
+    } else {
+      return '${duration.inMinutes}m';
+    }
+  }
+
+  String formatDateTime(DateTime dateTime) {
+    final formatter = DateFormat('yyyy-MM-dd HH:mm');
+    return formatter.format(dateTime);
+  }
+
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      leading: const Icon(Icons.access_time),
-      tileColor: Theme.of(context).cardColor,
-      title: Text("Recommended Departure: ${8 + widget.index}:00"),
-      subtitle: const Text("Estimated Time: 1h 30min - Distance: 90km"),
+      tileColor: isSelected ? Theme.of(context).colorScheme.primary : null,
+      leading: CircleAvatar(
+        child: Text('${index + 1}'),
+      ),
+      title: Text(
+        'Departure: ${formatDateTime(departureTime)}',
+        style: Theme.of(context).textTheme.bodyLarge,
+      ),
+      subtitle: Text(
+        'Distance: ${formatDistance(distance)}\nDuration: ${formatDuration(duration)}',
+      ),
       trailing: const Icon(Icons.arrow_forward_ios, size: 16),
-      onTap: () {
-        // TODO: Add tap functionality
-      },
+      onTap: onTap,
     );
   }
 }

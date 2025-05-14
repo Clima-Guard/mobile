@@ -2,16 +2,14 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
-import '../../utils/PolylineDecoder.dart';
-
 class GoogleMapWidget extends StatefulWidget {
   final List<LatLng> interpolatedPoints;
-  final String polyline;
+  final List<LatLng> polylinePoints;
 
   const GoogleMapWidget({
     super.key,
     required this.interpolatedPoints,
-    required this.polyline
+    required this.polylinePoints
   });
 
   @override
@@ -36,7 +34,7 @@ class _GoogleMapWidgetState extends State<GoogleMapWidget> {
           polylineId: const PolylineId("route"),
           color: const Color(0xFF1D3557),
           width: 5,
-          points: PolylineDecoder.decode(widget.polyline.replaceAll(r"\'''", r"'''").replaceAll(r"\\", r"\")),
+          points: widget.polylinePoints
         ),
       },
       markers: {
