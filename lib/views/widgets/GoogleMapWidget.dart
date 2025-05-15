@@ -25,9 +25,9 @@ class _GoogleMapWidgetState extends State<GoogleMapWidget> {
       onMapCreated: (controller) {
          mapController = controller;
       },
-      initialCameraPosition: const CameraPosition(
-        target: LatLng(46.77, 23.59),
-        zoom: 12,
+      initialCameraPosition: CameraPosition(
+        target: widget.polylinePoints.first,
+        zoom: 8,
       ),
       polylines: {
         Polyline(
