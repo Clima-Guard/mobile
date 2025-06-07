@@ -1,10 +1,10 @@
 
-import 'package:clima_guard_mobile/views/widgets/GoogleMapWidget.dart';
-import 'package:clima_guard_mobile/views/widgets/RecommendationContainerWidget.dart';
-import 'package:clima_guard_mobile/views/widgets/RouteDetailsCardWidget.dart';
 import 'package:flutter/material.dart';
 
 import '../viewmodels/RouteViewModel.dart';
+import 'widgets/GoogleMapWidget.dart';
+import 'widgets/RecommendationContainerWidget.dart';
+import 'widgets/RouteDetailsCardWidget.dart';
 
 class RouteMapScreen extends StatefulWidget {
   final DateTime startDate;
@@ -34,7 +34,6 @@ class _RouteMapScreenState extends State<RouteMapScreen> {
   @override
   void initState() {
     super.initState();
-
     widget.viewModel.loadFullRouteData(
       origin: widget.origin,
       destination: widget.destination,
@@ -46,6 +45,8 @@ class _RouteMapScreenState extends State<RouteMapScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final isPortrait = MediaQuery.of(context).orientation == Orientation.portrait;
+
     return Scaffold(
       appBar: AppBar(title: const Text("ClimaGuard")),
       body: AnimatedBuilder(
@@ -67,29 +68,92 @@ class _RouteMapScreenState extends State<RouteMapScreen> {
 
           return Stack(
             children: [
-              Column(
+              isPortrait
+                  ? Column(
                 children: [
-                  RouteDetailsCardWidget(
-                    startDate: widget.startDate,
-                    endDate: widget.endDate,
-                    origin: widget.origin,
-                    destination: widget.destination,
-                    waypoints: widget.waypoints,
+                  // Let this take only what's needed, scrollable if needed
+                  Flexible(
+                    flex: 4,
+                    child: SingleChildScrollView(
+                      padding: const EdgeInsets.only(bottom: 8),
+                      child: RouteDetailsCardWidget(
+                        startDate: widget.startDate,
+                        endDate: widget.endDate,
+                        origin: widget.origin,
+                        destination: widget.destination,
+                        waypoints: widget.waypoints,
+                        selectedWeatherData: widget.viewModel.selectedWeatherData,
+                        onClearWeather: () {
+                          setState(() {
+                            widget.viewModel.selectedWeatherData = null;
+                          });
+                        },
+                      ),
+                    ),
                   ),
+                  // Map takes the rest
+                  Expanded(
+                    flex: 6,
+                    child: GoogleMapWidget(
+                      interpolatedPoints: selectedRoute.interpolatedPoints,
+                      polylinePoints: selectedRoute.routeData.decodedPolyline,
+                      weatherConditions: selectedRoute.weatherConditions,
+                      onMarkerSelected: (int markerIndex) {
+                        setState(() {
+                          widget.viewModel.selectedWeatherData =
+                          selectedRoute.weatherConditions[markerIndex];
+                        });
+                      },
+                    ),
+                  ),
+                ],
+              )
+                  : Row(
+                children: [
+                  // Let details scroll if needed
+                  SizedBox(
+                    width: 350,
+                    child: SingleChildScrollView(
+                      padding: const EdgeInsets.only(bottom: 8),
+                      child: RouteDetailsCardWidget(
+                        startDate: widget.startDate,
+                        endDate: widget.endDate,
+                        origin: widget.origin,
+                        destination: widget.destination,
+                        waypoints: widget.waypoints,
+                        selectedWeatherData: widget.viewModel.selectedWeatherData,
+                        onClearWeather: () {
+                          setState(() {
+                            widget.viewModel.selectedWeatherData = null;
+                          });
+                        },
+                      ),
+                    ),
+                  ),
+                  // Map fills the rest
                   Expanded(
                     child: GoogleMapWidget(
                       interpolatedPoints: selectedRoute.interpolatedPoints,
                       polylinePoints: selectedRoute.routeData.decodedPolyline,
+                      weatherConditions: selectedRoute.weatherConditions,
+                      onMarkerSelected: (int markerIndex) {
+                        setState(() {
+                          widget.viewModel.selectedWeatherData =
+                          selectedRoute.weatherConditions[markerIndex];
+                        });
+                      },
                     ),
                   ),
                 ],
               ),
+              // Recommendation overlay
               RecommendationContainerWidget(
                 fullRoutes: widget.viewModel.fullRoutes,
                 selectedIndex: selectedRouteIndex,
                 onSelected: (newIndex) {
                   setState(() {
                     selectedRouteIndex = newIndex;
+                    widget.viewModel.selectedWeatherData = null;
                   });
                 },
               ),
@@ -99,5 +163,4 @@ class _RouteMapScreenState extends State<RouteMapScreen> {
       ),
     );
   }
-
 }

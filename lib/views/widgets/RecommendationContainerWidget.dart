@@ -24,6 +24,7 @@ class RecommendationContainerWidget extends StatelessWidget {
       maxChildSize: 0.5,
       builder: (BuildContext context, ScrollController scrollController) {
         return Container(
+          clipBehavior: Clip.antiAlias,
           decoration: BoxDecoration(
             color: Theme.of(context).colorScheme.surface,
             borderRadius: const BorderRadius.only(
@@ -38,20 +39,41 @@ class RecommendationContainerWidget extends StatelessWidget {
               ),
             ],
           ),
-          child: ListView.builder(
-            controller: scrollController,
-            itemCount: fullRoutes.length,
-            itemBuilder: (context, index) {
-              final route = fullRoutes[index];
-              return RecommendationWidget(
-                index: index,
-                departureTime: route.recommendedDepartureTime,
-                distance: route.routeData.distanceMeters,
-                duration: route.routeData.duration,
-                isSelected: selectedIndex == index,
-                onTap: () => onSelected(index),
-              );
-            },
+          child: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 8.0),
+                child: Container(
+                  width: 40,
+                  height: 4,
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).textTheme.titleLarge?.color,
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                ),
+              ),
+              Expanded(
+                child: ListView.builder(
+                  controller: scrollController,
+                  padding: const EdgeInsets.symmetric(vertical: 8),
+                  itemCount: fullRoutes.length,
+                  itemBuilder: (context, index) {
+                    final route = fullRoutes[index];
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+                      child: RecommendationWidget(
+                        index: index,
+                        departureTime: route.recommendedDepartureTime,
+                        distance: route.routeData.distanceMeters,
+                        duration: route.routeData.duration,
+                        isSelected: selectedIndex == index,
+                        onTap: () => onSelected(index),
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ],
           ),
         );
       },

@@ -7,10 +7,12 @@ class RouteMergedData {
   final RouteDataModel routeData;
   final List<LatLng> interpolatedPoints;
   final DateTime recommendedDepartureTime;
+  final List<Map<String, double>> weatherConditions;
 
   RouteMergedData({
     required this.routeData,
     required this.interpolatedPoints,
     required this.recommendedDepartureTime,
+    required this.weatherConditions,
   });
 }

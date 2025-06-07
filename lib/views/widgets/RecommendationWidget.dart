@@ -40,20 +40,32 @@ class RecommendationWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-      tileColor: isSelected ? Theme.of(context).colorScheme.primary : null,
-      leading: CircleAvatar(
-        child: Text('${index + 1}'),
-      ),
-      title: Text(
-        'Departure: ${formatDateTime(departureTime)}',
-        style: Theme.of(context).textTheme.bodyLarge,
-      ),
-      subtitle: Text(
-        'Distance: ${formatDistance(distance)}\nDuration: ${formatDuration(duration)}',
-      ),
-      trailing: const Icon(Icons.arrow_forward_ios, size: 16),
+    final theme = Theme.of(context);
+
+    return GestureDetector(
       onTap: onTap,
+      child: Container(
+        decoration: BoxDecoration(
+          color: isSelected
+              ? theme.colorScheme.primary.withOpacity(0.2)
+              : Colors.transparent,
+          borderRadius: BorderRadius.circular(12),
+        ),
+        padding: const EdgeInsets.symmetric(vertical: 4),
+        child: ListTile(
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+          contentPadding: const EdgeInsets.symmetric(horizontal: 16),
+          leading: CircleAvatar(child: Text('${index + 1}')),
+          title: Text(
+            'Departure: ${formatDateTime(departureTime)}',
+            style: theme.textTheme.bodyLarge,
+          ),
+          subtitle: Text(
+            'Distance: ${formatDistance(distance)}\nDuration: ${formatDuration(duration)}',
+          ),
+          trailing: const Icon(Icons.arrow_forward_ios, size: 16),
+        ),
+      ),
     );
   }
 }

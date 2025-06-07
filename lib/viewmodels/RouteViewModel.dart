@@ -23,6 +23,7 @@ class RouteViewModel extends ChangeNotifier {
   });
 
   List<RouteMergedData> fullRoutes = [];
+  Map<String, double>? selectedWeatherData;
 
   bool isLoading = false;
   String? errorMessage;
@@ -68,7 +69,7 @@ class RouteViewModel extends ChangeNotifier {
       final recommendationRequest = RecommendationRequestDto(key: s3Key);
 
       logger.i('[RouteViewModel] Fetching recommended departure times...');
-      final fetchedRecommendedTimes = await recommendationService.fetchRecommendedTimes(recommendationRequest);
+      final fetchedRecommendations = await recommendationService.fetchRecommendations(recommendationRequest);
 
       logger.i('[RouteViewModel] Successfully loaded full route data.');
 
@@ -76,7 +77,8 @@ class RouteViewModel extends ChangeNotifier {
         return RouteMergedData(
           routeData: fetchedRoutes[index],
           interpolatedPoints: fetchedInterpolatedPoints[index],
-          recommendedDepartureTime: fetchedRecommendedTimes[index],
+          recommendedDepartureTime: fetchedRecommendations[index].recommendedDepartureDateTime,
+          weatherConditions: fetchedRecommendations[index].weatherConditionsForDepartureDateTime,
         );
       });
     } catch (e, stackTrace) {
