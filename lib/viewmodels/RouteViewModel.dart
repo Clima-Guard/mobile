@@ -1,10 +1,12 @@
 
+import 'dart:async';
 import 'package:clima_guard_mobile/dtos/RecommendationRequestDto.dart';
 import 'package:clima_guard_mobile/models/RouteMergedData.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 import '../dtos/RouteRequestDto.dart';
 import '../dtos/WeatherRequestDto.dart';
+import '../exceptions/HttpErrorHandler.dart';
 import '../services/RouteService.dart';
 import '../services/WeatherService.dart';
 import '../services/RecommendationService.dart';
@@ -83,7 +85,7 @@ class RouteViewModel extends ChangeNotifier {
       });
     } catch (e, stackTrace) {
       logger.e('[RouteViewModel] Error in loadFullRouteData', error: e, stackTrace: stackTrace);
-      errorMessage = e.toString();
+      errorMessage = HttpErrorHandler.getMessage(e);
     } finally {
       isLoading = false;
       notifyListeners();

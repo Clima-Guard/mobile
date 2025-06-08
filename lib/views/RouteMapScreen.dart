@@ -57,7 +57,7 @@ class _RouteMapScreenState extends State<RouteMapScreen> {
           }
 
           if (widget.viewModel.errorMessage != null) {
-            return Center(child: Text('Error: ${widget.viewModel.errorMessage}'));
+            return Center(child: Text('${widget.viewModel.errorMessage}'));
           }
 
           if (widget.viewModel.fullRoutes.isEmpty) {
@@ -71,7 +71,6 @@ class _RouteMapScreenState extends State<RouteMapScreen> {
               isPortrait
                   ? Column(
                 children: [
-                  // Let this take only what's needed, scrollable if needed
                   Flexible(
                     flex: 4,
                     child: SingleChildScrollView(
@@ -91,7 +90,6 @@ class _RouteMapScreenState extends State<RouteMapScreen> {
                       ),
                     ),
                   ),
-                  // Map takes the rest
                   Expanded(
                     flex: 6,
                     child: GoogleMapWidget(
@@ -110,7 +108,6 @@ class _RouteMapScreenState extends State<RouteMapScreen> {
               )
                   : Row(
                 children: [
-                  // Let details scroll if needed
                   SizedBox(
                     width: 350,
                     child: SingleChildScrollView(
@@ -130,7 +127,6 @@ class _RouteMapScreenState extends State<RouteMapScreen> {
                       ),
                     ),
                   ),
-                  // Map fills the rest
                   Expanded(
                     child: GoogleMapWidget(
                       interpolatedPoints: selectedRoute.interpolatedPoints,
@@ -146,7 +142,6 @@ class _RouteMapScreenState extends State<RouteMapScreen> {
                   ),
                 ],
               ),
-              // Recommendation overlay
               RecommendationContainerWidget(
                 fullRoutes: widget.viewModel.fullRoutes,
                 selectedIndex: selectedRouteIndex,

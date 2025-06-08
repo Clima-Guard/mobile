@@ -18,8 +18,12 @@ class TimePeriodWidget extends StatefulWidget {
 
 class _TimePeriodWidgetState extends State<TimePeriodWidget> {
   Future<void> _showDateRangePicker() async {
-    final initialStartDate = widget.startDate ?? DateTime.now();
-    final initialEndDate = widget.endDate ?? DateTime.now().add(const Duration(days: 7));
+    final now = DateTime.now();
+    final maxSelectableDate = now.add(const Duration(days: 14));
+    const maxRange = Duration(days: 7);
+
+    final initialStartDate = widget.startDate ?? now;
+    final initialEndDate = widget.endDate ?? now.add(const Duration(days: 3));
 
     final theme = Theme.of(context);
 
@@ -33,10 +37,19 @@ class _TimePeriodWidgetState extends State<TimePeriodWidget> {
     final picked = await showDateRangePicker(
       context: context,
       initialDateRange: DateTimeRange(start: initialStartDate, end: initialEndDate),
-      firstDate: DateTime(2000),
-      lastDate: DateTime(2100),
+      firstDate: now,
+      lastDate: maxSelectableDate,
       builder: (context, child) {
         return Theme(data: dialogTheme, child: child!);
+      },
+      selectableDayPredicate: (day, start, end) {
+        if (day.isAfter(maxSelectableDate)) return false;
+
+        if (start != null && end == null) {
+          return day.difference(start).inDays <= maxRange.inDays;
+        }
+
+        return true;
       },
     );
 
@@ -76,10 +89,7 @@ class _TimePeriodWidgetState extends State<TimePeriodWidget> {
                 Expanded(
                   child: Column(
                     children: [
-                      Text(
-                        "Departure",
-                        style: textTheme.labelLarge,
-                      ),
+                      Text("Departure", style: textTheme.labelLarge),
                       const SizedBox(height: 6),
                       Text(
                         _formatDate(widget.startDate),
@@ -92,10 +102,7 @@ class _TimePeriodWidgetState extends State<TimePeriodWidget> {
                 Expanded(
                   child: Column(
                     children: [
-                      Text(
-                        "Return",
-                        style: textTheme.labelLarge,
-                      ),
+                      Text("Return", style: textTheme.labelLarge),
                       const SizedBox(height: 6),
                       Text(
                         _formatDate(widget.endDate),
