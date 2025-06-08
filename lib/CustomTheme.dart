@@ -2,8 +2,7 @@
 import 'package:flutter/material.dart';
 
 class CustomTheme {
-  static ThemeData lightThemeData()
-  {
+  static ThemeData lightThemeData() {
     return ThemeData(
       colorScheme: const ColorScheme(
         brightness: Brightness.light,
@@ -39,11 +38,66 @@ class CustomTheme {
         backgroundColor: Color(0xFFE63946),
         foregroundColor: Colors.white,
       ),
+      datePickerTheme: DatePickerThemeData(
+        backgroundColor: const Color(0xFFF1FAEE),
+        surfaceTintColor: Colors.transparent,
+
+        headerBackgroundColor: const Color(0xFF457B9D),
+        headerForegroundColor: Colors.white,
+        headerHeadlineStyle: const TextStyle(
+          color: Colors.white,
+          fontSize: 20,
+          fontWeight: FontWeight.bold,
+        ),
+        headerHelpStyle: const TextStyle(
+          color: Colors.white70,
+          fontSize: 16,
+        ),
+
+        weekdayStyle: const TextStyle(
+          color: Color(0xFF1D3557),
+          fontWeight: FontWeight.w600,
+        ),
+
+        dayStyle: const TextStyle(
+          color: Color(0xFF1D3557),
+          fontWeight: FontWeight.w500,
+        ),
+        todayForegroundColor: WidgetStatePropertyAll(Colors.white),
+        todayBackgroundColor: WidgetStatePropertyAll(Color(0xFFE63946)),
+
+        rangePickerBackgroundColor: const Color(0xFFF1FAEE),
+        rangeSelectionBackgroundColor: const Color(0xFFFFCDD2),
+        rangeSelectionOverlayColor: WidgetStatePropertyAll(Color(0x88FFCDD2)),
+
+        yearStyle: const TextStyle(
+          color: Color(0xFF1D3557),
+          fontWeight: FontWeight.w600,
+        ),
+        yearForegroundColor: WidgetStatePropertyAll(Color(0xFF1D3557)),
+
+        dividerColor: Color(0xFF1D3557),
+
+        cancelButtonStyle: TextButton.styleFrom(
+          foregroundColor: Color(0xFF1D3557),
+          textStyle: const TextStyle(fontWeight: FontWeight.bold),
+        ),
+        confirmButtonStyle: TextButton.styleFrom(
+          foregroundColor: Color(0xFF1D3557),
+          textStyle: const TextStyle(fontWeight: FontWeight.bold),
+        ),
+
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16),
+        ),
+        rangePickerShape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16),
+        ),
+      ),
     );
   }
 
-  static ThemeData darkThemeData()
-  {
+  static ThemeData darkThemeData() {
     return ThemeData(
       colorScheme: const ColorScheme(
         brightness: Brightness.dark,
@@ -90,33 +144,43 @@ class CustomTheme {
           fontSize: 20,
           fontWeight: FontWeight.bold,
         ),
-        headerHelpStyle: TextStyle(
-          color: Colors.white,
+        headerHelpStyle: const TextStyle(
+          color: Colors.white70,
           fontSize: 16,
         ),
 
         weekdayStyle: const TextStyle(
           color: Color(0xFFA8DADC),
+          fontWeight: FontWeight.w600,
         ),
 
         dayStyle: const TextStyle(
-          color: Color(0xFFF1FAEE),
+          color: Colors.white,
+          fontWeight: FontWeight.w500,
         ),
-        dayForegroundColor: WidgetStatePropertyAll(Colors.white),
         todayForegroundColor: WidgetStatePropertyAll(Colors.white),
         todayBackgroundColor: WidgetStatePropertyAll(Color(0xFFE63946)),
 
         rangePickerBackgroundColor: const Color(0xFF1D3557),
-        rangeSelectionBackgroundColor: const Color(0xFFE63946),
-        rangeSelectionOverlayColor: WidgetStatePropertyAll(Colors.redAccent[100]),
+        rangeSelectionBackgroundColor: const Color(0x66E32828),
+        rangeSelectionOverlayColor: WidgetStatePropertyAll(Color(0x669E1818)),
 
         yearStyle: const TextStyle(
-          color: Color(0xFFF1FAEE),
+          color: Colors.white,
+          fontWeight: FontWeight.w600,
         ),
         yearForegroundColor: WidgetStatePropertyAll(Colors.white),
-        yearBackgroundColor: WidgetStatePropertyAll(Color(0xFFE63946)),
 
         dividerColor: Colors.white,
+
+        cancelButtonStyle: TextButton.styleFrom(
+          foregroundColor: Colors.white,
+          textStyle: const TextStyle(fontWeight: FontWeight.bold),
+        ),
+        confirmButtonStyle: TextButton.styleFrom(
+          foregroundColor: Colors.white,
+          textStyle: const TextStyle(fontWeight: FontWeight.bold),
+        ),
 
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(16),
@@ -124,21 +188,12 @@ class CustomTheme {
         rangePickerShape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(16),
         ),
-
-        cancelButtonStyle: TextButton.styleFrom(
-          foregroundColor: Colors.white,
-        ),
-        confirmButtonStyle: TextButton.styleFrom(
-          foregroundColor: Colors.white,
-        ),
       ),
-
       textButtonTheme: TextButtonThemeData(
         style: TextButton.styleFrom(
           foregroundColor: Colors.white,
         ),
       ),
-
       dialogTheme: const DialogTheme(
         backgroundColor: Color(0xFF1D3557),
         titleTextStyle: TextStyle(

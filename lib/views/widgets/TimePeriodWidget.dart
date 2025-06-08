@@ -21,18 +21,22 @@ class _TimePeriodWidgetState extends State<TimePeriodWidget> {
     final initialStartDate = widget.startDate ?? DateTime.now();
     final initialEndDate = widget.endDate ?? DateTime.now().add(const Duration(days: 7));
 
+    final theme = Theme.of(context);
+
+    final ThemeData dialogTheme = theme.copyWith(
+      dialogBackgroundColor: theme.dialogTheme.backgroundColor,
+      colorScheme: theme.colorScheme,
+      textButtonTheme: theme.textButtonTheme,
+      datePickerTheme: theme.datePickerTheme,
+    );
+
     final picked = await showDateRangePicker(
       context: context,
       initialDateRange: DateTimeRange(start: initialStartDate, end: initialEndDate),
       firstDate: DateTime(2000),
       lastDate: DateTime(2100),
       builder: (context, child) {
-        return Theme(
-          data: Theme.of(context).copyWith(
-            colorScheme: ColorScheme.fromSeed(seedColor: Theme.of(context).primaryColor),
-          ),
-          child: child!,
-        );
+        return Theme(data: dialogTheme, child: child!);
       },
     );
 
