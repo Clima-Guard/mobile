@@ -1,10 +1,12 @@
 
+import 'dart:async';
 import 'package:clima_guard_mobile/dtos/RecommendationRequestDto.dart';
 import 'package:clima_guard_mobile/models/RouteMergedData.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 import '../dtos/RouteRequestDto.dart';
 import '../dtos/WeatherRequestDto.dart';
+import '../exceptions/HttpErrorHandler.dart';
 import '../services/RouteService.dart';
 import '../services/WeatherService.dart';
 import '../services/RecommendationService.dart';
@@ -23,6 +25,7 @@ class RouteViewModel extends ChangeNotifier {
   });
 
   List<RouteMergedData> fullRoutes = [];
+  Map<String, double>? selectedWeatherData;
 
   bool isLoading = false;
   String? errorMessage;
@@ -68,7 +71,7 @@ class RouteViewModel extends ChangeNotifier {
       final recommendationRequest = RecommendationRequestDto(key: s3Key);
 
       logger.i('[RouteViewModel] Fetching recommended departure times...');
-      final fetchedRecommendedTimes = await recommendationService.fetchRecommendedTimes(recommendationRequest);
+      final fetchedRecommendations = await recommendationService.fetchRecommendations(recommendationRequest);
 
       logger.i('[RouteViewModel] Successfully loaded full route data.');
 
@@ -76,12 +79,14 @@ class RouteViewModel extends ChangeNotifier {
         return RouteMergedData(
           routeData: fetchedRoutes[index],
           interpolatedPoints: fetchedInterpolatedPoints[index],
-          recommendedDepartureTime: fetchedRecommendedTimes[index],
+          recommendedLocalDepartureTime: fetchedRecommendations[index].recommendedLocalDepartureDateTime,
+          recommendedUtcDepartureTime: fetchedRecommendations[index].recommendedUtcDepartureDateTime,
+          weatherConditions: fetchedRecommendations[index].weatherConditionsForDepartureDateTime,
         );
       });
     } catch (e, stackTrace) {
       logger.e('[RouteViewModel] Error in loadFullRouteData', error: e, stackTrace: stackTrace);
-      errorMessage = e.toString();
+      errorMessage = HttpErrorHandler.getMessage(e);
     } finally {
       isLoading = false;
       notifyListeners();

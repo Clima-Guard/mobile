@@ -51,6 +51,7 @@ class _GooglePlacesSearchBarWidgetState
       ),
       placeType: PlaceType.geocode,
       debounceTime: 300,
+      isLatLngRequired: false,
       itemClick: (p) {
         if (p.description != null) {
           widget.onPlaceSelected(p.description!);
