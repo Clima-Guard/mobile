@@ -4,7 +4,8 @@ import 'package:intl/intl.dart';
 
 class RecommendationWidget extends StatelessWidget {
   final int index;
-  final DateTime departureTime;
+  final DateTime localDepartureTime;
+  final DateTime utcDepartureTime;
   final int distance;
   final Duration duration;
   final bool isSelected;
@@ -13,7 +14,8 @@ class RecommendationWidget extends StatelessWidget {
   const RecommendationWidget({
     super.key,
     required this.index,
-    required this.departureTime,
+    required this.localDepartureTime,
+    required this.utcDepartureTime,
     required this.distance,
     required this.duration,
     required this.isSelected,
@@ -57,7 +59,7 @@ class RecommendationWidget extends StatelessWidget {
           contentPadding: const EdgeInsets.symmetric(horizontal: 16),
           leading: CircleAvatar(child: Text('${index + 1}')),
           title: Text(
-            'Departure: ${formatDateTime(departureTime)}',
+            'Departure:\n${formatDateTime(localDepartureTime)} (Local)\n${formatDateTime(utcDepartureTime)} (UTC)',
             style: theme.textTheme.bodyLarge,
           ),
           subtitle: Text(

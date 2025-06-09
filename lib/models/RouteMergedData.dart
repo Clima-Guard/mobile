@@ -6,13 +6,15 @@ import 'RouteDataModel.dart';
 class RouteMergedData {
   final RouteDataModel routeData;
   final List<LatLng> interpolatedPoints;
-  final DateTime recommendedDepartureTime;
+  final DateTime recommendedLocalDepartureTime;
+  final DateTime recommendedUtcDepartureTime;
   final List<Map<String, double>> weatherConditions;
 
   RouteMergedData({
     required this.routeData,
     required this.interpolatedPoints,
-    required this.recommendedDepartureTime,
+    required this.recommendedLocalDepartureTime,
+    required this.recommendedUtcDepartureTime,
     required this.weatherConditions,
   });
 }

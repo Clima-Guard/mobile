@@ -1,16 +1,19 @@
 
 class RecommendationDataModel {
-  final DateTime recommendedDepartureDateTime;
+  final DateTime recommendedLocalDepartureDateTime;
+  final DateTime recommendedUtcDepartureDateTime;
   final List<Map<String, double>> weatherConditionsForDepartureDateTime;
 
   RecommendationDataModel({
-    required this.recommendedDepartureDateTime,
+    required this.recommendedLocalDepartureDateTime,
+    required this.recommendedUtcDepartureDateTime,
     required this.weatherConditionsForDepartureDateTime,
   });
 
   factory RecommendationDataModel.fromJson(Map<String, dynamic> json) {
     return RecommendationDataModel(
-      recommendedDepartureDateTime: DateTime.parse(json['recommendedDepartureDateTime']),
+      recommendedLocalDepartureDateTime: DateTime.parse(json['recommendedLocalDepartureDateTime']),
+      recommendedUtcDepartureDateTime: DateTime.parse(json['recommendedUtcDepartureDateTime']),
       weatherConditionsForDepartureDateTime: (json['weatherConditionsForDepartureDateTime'] as List)
           .map<Map<String, double>>((item) =>
           (item as Map<String, dynamic>).map<String, double>(

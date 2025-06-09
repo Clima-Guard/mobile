@@ -63,7 +63,8 @@ class RecommendationContainerWidget extends StatelessWidget {
                       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
                       child: RecommendationWidget(
                         index: index,
-                        departureTime: route.recommendedDepartureTime,
+                        localDepartureTime: route.recommendedLocalDepartureTime,
+                        utcDepartureTime: route.recommendedUtcDepartureTime,
                         distance: route.routeData.distanceMeters,
                         duration: route.routeData.duration,
                         isSelected: selectedIndex == index,

@@ -79,7 +79,8 @@ class RouteViewModel extends ChangeNotifier {
         return RouteMergedData(
           routeData: fetchedRoutes[index],
           interpolatedPoints: fetchedInterpolatedPoints[index],
-          recommendedDepartureTime: fetchedRecommendations[index].recommendedDepartureDateTime,
+          recommendedLocalDepartureTime: fetchedRecommendations[index].recommendedLocalDepartureDateTime,
+          recommendedUtcDepartureTime: fetchedRecommendations[index].recommendedUtcDepartureDateTime,
           weatherConditions: fetchedRecommendations[index].weatherConditionsForDepartureDateTime,
         );
       });
