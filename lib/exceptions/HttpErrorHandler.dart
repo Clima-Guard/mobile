@@ -25,7 +25,7 @@ class HttpErrorHandler {
           }
         }
 
-        return body['detail'] ?? body['detail'] ?? "Something went wrong.";
+        return body['detail'] ?? "Something went wrong.";
       } catch (_) {
         return "Server error. Please try again later.";
       }
