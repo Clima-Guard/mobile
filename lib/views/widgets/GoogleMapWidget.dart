@@ -26,7 +26,7 @@ class GoogleMapWidget extends StatelessWidget {
       polylines: {
         Polyline(
           polylineId: const PolylineId("route"),
-          color: Theme.of(context).appBarTheme.backgroundColor ?? Colors.black,
+          color: Color(0xFF1D3557),
           width: 5,
           points: polylinePoints,
         ),

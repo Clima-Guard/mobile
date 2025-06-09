@@ -18,14 +18,23 @@ class HttpErrorHandler {
       try {
         final Map<String, dynamic> body = json.decode(response.body);
 
-        if (body.containsKey('errors')) {
-          final errors = body['errors'] as Map<String, dynamic>;
-          if (errors.isNotEmpty) {
-            return errors.values.first[0];
-          }
+        final fieldErrors = body.entries.where((e) => e.value is List);
+        if (fieldErrors.isNotEmpty) {
+          final messages = fieldErrors.expand((e) {
+            final list = e.value;
+            if (list is List) {
+              return list.cast<String>();
+            }
+            return [];
+          }).toList();
+          return messages.join('\n');
         }
 
-        return body['detail'] ?? "Something went wrong.";
+        if (body.containsKey('detail')) {
+          return body['detail'];
+        }
+
+        return "Something went wrong.";
       } catch (_) {
         return "Server error. Please try again later.";
       }
