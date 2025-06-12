@@ -5,15 +5,15 @@ import 'package:http/http.dart' as http;
 import 'package:logger/logger.dart';
 
 class WeatherService {
-  final String ipAddress;
+  final String urlPath;
   final Logger logger;
 
   WeatherService({
-    required this.ipAddress,
+    required this.urlPath,
     required this.logger
   });
 
-  String get baseUrl => 'http://$ipAddress:5001/api/weather/compress';
+  String get baseUrl => '$urlPath/api/weather/compress';
 
   Future<String> fetchS3Key(WeatherRequestDto request) async {
     final uri = Uri.parse(baseUrl);

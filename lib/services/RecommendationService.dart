@@ -7,15 +7,15 @@ import 'package:logger/logger.dart';
 import '../models/RecommendationDataModel.dart';
 
 class RecommendationService {
-  final String ipAddress;
+  final String urlPath;
   final Logger logger;
 
   RecommendationService({
-    required this.ipAddress,
+    required this.urlPath,
     required this.logger
   });
 
-  String get baseUrl => 'http://$ipAddress:5002/api/recommend';
+  String get baseUrl => '$urlPath/api/recommend';
 
   Future<List<RecommendationDataModel>> fetchRecommendations(RecommendationRequestDto request) async {
     final uri = Uri.parse(baseUrl).replace(queryParameters: request.toQueryParameters());

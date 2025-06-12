@@ -10,12 +10,14 @@ import 'package:logger/logger.dart';
 
 void main() async {
   await dotenv.load(fileName: '.env');
-  String ipAddress = dotenv.env['IP_ADDRESS']!;
+  String routeServicePath = dotenv.env['ROUTE_SERVICE_PATH']!;
+  String weatherServicePath = dotenv.env['WEATHER_SERVICE_PATH']!;
+  String recommendationServicePath = dotenv.env['RECOMMENDATION_SERVICE_PATH']!;
   Logger logger = Logger();
 
-  final RouteService routeService = RouteService(ipAddress: ipAddress, logger: logger);
-  final WeatherService weatherService = WeatherService(ipAddress: ipAddress, logger: logger);
-  final RecommendationService recommendationService = RecommendationService(ipAddress: ipAddress, logger: logger);
+  final RouteService routeService = RouteService(urlPath: routeServicePath, logger: logger);
+  final WeatherService weatherService = WeatherService(urlPath: weatherServicePath, logger: logger);
+  final RecommendationService recommendationService = RecommendationService(urlPath: recommendationServicePath, logger: logger);
   final RouteViewModel viewModel = RouteViewModel(
       routeService: routeService,
       weatherService: weatherService,

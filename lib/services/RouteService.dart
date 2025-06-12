@@ -7,15 +7,15 @@ import '../dtos/RouteRequestDto.dart';
 import '../models/RouteDataModel.dart';
 
 class RouteService {
-  final String ipAddress;
+  final String urlPath;
   final Logger logger;
 
   RouteService({
-    required this.ipAddress,
+    required this.urlPath,
     required this.logger
   });
 
-  String get baseUrl => 'http://$ipAddress:5000/api/routes';
+  String get baseUrl => '$urlPath/api/routes';
 
   Future<List<RouteDataModel>> fetchRoutes(RouteRequestDto request) async {
     final uri = Uri.parse(baseUrl).replace(queryParameters: request.toQueryParameters());
